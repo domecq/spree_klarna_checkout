@@ -37,4 +37,5 @@ Simply add this require statement to your spec_helper:
 require 'spree_klarna_checkout/factories'
 ```
 
-Copyright (c) 2014 [name of extension creator], released under the New BSD License
+Copyright (c) 2014 [Nicolás Peralta][1], released under the New BSD License
+[1]: https://github.com/domecq
