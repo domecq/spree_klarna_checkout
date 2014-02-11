@@ -3,26 +3,35 @@ require 'klarna/checkout'
 Spree::CheckoutController.class_eval do
 
   def push
-    # # get the id
-    # checkout_id = params[:klarna_order]
-    # # call klarna API
-    # client = Klarna::Checkout::Client.new({
-    #   shared_secret: Spree::Gateway::KlarnaCheckout.first.preferred_shared_secret,
-    #   environment: :test # or :production
-    # })
-
-
-  end
-  def confirmation
+    # get the id
+    checkout_id = params[:klarna_order]
 
     # call klarna API
-    client = Klarna::Checkout::Client.new({
-      shared_secret: Spree::Gateway::KlarnaCheckout.first.preferred_shared_secret,
-      environment: :test # or :production
-    })
+    client = get_client
 
+    @remote_order = client.read_order(checkout_id)
+
+    if @remote_order.status != "checkout_incomplete"
+      redirect '/checkout'
+    end    
 
   end
+
+  def confirmation
+    # get the id
+    checkout_id = params[:klarna_order]
+
+    # call klarna API
+    client = get_client
+
+    @remote_order = client.read_order(checkout_id)
+
+    if @remote_order.status != "checkout_incomplete"
+      redirect '/checkout'
+    end    
+
+  end
+
 
   private
 
@@ -39,14 +48,18 @@ Spree::CheckoutController.class_eval do
     end
   end
 
+  def get_client    
+    Klarna::Checkout::Client.new({
+      shared_secret: Spree::Gateway::KlarnaCheckout.first.preferred_shared_secret,
+      environment: :test # or :production
+    })    
+  end
+
   def call_klarna_api
     binding.pry
 
     # call klarna API
-    client = Klarna::Checkout::Client.new({
-      shared_secret: Spree::Gateway::KlarnaCheckout.first.preferred_shared_secret,
-      environment: :test # or :production
-    })
+    client = get_client
 
     # get item from spree
     items = []
