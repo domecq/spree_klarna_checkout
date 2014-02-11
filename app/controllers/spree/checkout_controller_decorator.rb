@@ -11,8 +11,11 @@ Spree::CheckoutController.class_eval do
 
     @remote_order = client.read_order(checkout_id)
 
-    if @remote_order.status != "checkout_incomplete"
-      redirect '/checkout'
+    if @remote_order.status == "checkout_complete"      
+      @remote_order.status = "created";
+      @remote_order.merchant_reference = { 'order_id' => @order.number }
+      # update order (remote)
+      client.create_order(@remote_order)
     end    
 
   end
