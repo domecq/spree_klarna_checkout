@@ -59,7 +59,7 @@ Spree::CheckoutController.class_eval do
   end
 
   def call_klarna_api
-    binding.pry
+    # binding.pry
 
     # call klarna API
     client = get_client
