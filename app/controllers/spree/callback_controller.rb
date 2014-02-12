@@ -6,6 +6,7 @@ class Spree::CallbackController < ApplicationController
   def push_uri
     # get the id
     checkout_id = params[:klarna_order]
+    order_id    = params[:order_id]
 
     # call klarna API
     client = Klarna::Checkout::Client.new({
@@ -14,13 +15,19 @@ class Spree::CallbackController < ApplicationController
     })    
 
 
-    @remote_order = client.read_order(checkout_id)
+    remote_order = client.read_order(checkout_id)
 
-    if @remote_order.status == "checkout_complete"      
-      @remote_order.status = "created";
-      @remote_order.merchant_reference = { 'order_id' => @order.number }
+    if remote_order.status == "checkout_complete"      
+
+      # load spree order
+      order = Spree::Order.find_by_number(order_id) 
+      # order.payment.complete!
+      # 
+
+      remote_order.status = "created"
+      remote_order.merchant_reference = { 'orderid1' => order.number }
       # update order (remote)
-      client.create_order(@remote_order)
+      client.update_order(remote_order)
     end    
 
   end

@@ -2,24 +2,6 @@ require 'klarna/checkout'
 
 Spree::CheckoutController.class_eval do  
 
-  def push_uri
-    # get the id
-    checkout_id = params[:klarna_order]
-
-    # call klarna API
-    client = get_client
-
-    @remote_order = client.read_order(checkout_id)
-
-    if @remote_order.status == "checkout_complete"      
-      @remote_order.status = "created";
-      @remote_order.merchant_reference = { 'order_id' => @order.number }
-      # update order (remote)
-      client.create_order(@remote_order)
-    end    
-
-  end
-
   def confirmation
     # get the id
     checkout_id = params[:klarna_order]
@@ -89,9 +71,11 @@ Spree::CheckoutController.class_eval do
         terms_uri:        'http://spreetest.pixelwerk.no/terms',
         checkout_uri:     'http://spreetest.pixelwerk.no/checkout',
         confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation',
-        push_uri:         'http://spreetest.pixelwerk.no/push_uri'
+        push_uri:         'http://spreetest.pixelwerk.no/push_uri?klarna_order={checkout.order.id}&order_id=' + @current_order.number
+
       }
     })
+
 
     # Create the order with Klarna
     client.create_order(order)
