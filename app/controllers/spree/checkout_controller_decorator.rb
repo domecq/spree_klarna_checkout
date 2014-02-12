@@ -11,8 +11,8 @@ Spree::CheckoutController.class_eval do
 
     @remote_order = client.read_order(checkout_id)
 
-    if @remote_order.status != "checkout_incomplete"
-      redirect '/checkout'
+    if @remote_order.status == "checkout_incomplete"
+      redirect_to '/checkout'
     end    
 
   end
@@ -70,7 +70,7 @@ Spree::CheckoutController.class_eval do
         id: Spree::Gateway::KlarnaCheckout.first.preferred_id,
         terms_uri:        'http://spreetest.pixelwerk.no/terms',
         checkout_uri:     'http://spreetest.pixelwerk.no/checkout',
-        confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation',
+        confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation?klarna_order={checkout.order.id}',
         push_uri:         'http://spreetest.pixelwerk.no/push_uri?klarna_order={checkout.order.id}&order_id=' + @current_order.number
 
       }
