@@ -2,6 +2,8 @@ require 'klarna/checkout'
 
 Spree::CheckoutController.class_eval do
 
+  skip_before_filter :verify_authenticity_token
+
   def push
     # get the id
     checkout_id = params[:klarna_order]
