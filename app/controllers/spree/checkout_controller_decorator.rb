@@ -88,7 +88,7 @@ Spree::CheckoutController.class_eval do
         id: Spree::Gateway::KlarnaCheckout.first.preferred_id,
         terms_uri:        'http://spreetest.pixelwerk.no/terms',
         checkout_uri:     'http://spreetest.pixelwerk.no/checkout',
-        confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation_uri',
+        confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation',
         push_uri:         'http://spreetest.pixelwerk.no/push'
       }
     })

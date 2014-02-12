@@ -1,5 +1,5 @@
 Spree::Core::Engine.routes.draw do
   # Add your extension routes here
-  post "/push" => "checkout_controllet#push"
-  post "/confirmation_uri" => "checkout_controllet#confirmation"
+  post "/push" => "checkout_controller#push"
+  post "/confirmation" => "checkout_controller#confirmation"
 end
