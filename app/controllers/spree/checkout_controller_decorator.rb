@@ -1,8 +1,6 @@
 require 'klarna/checkout'
 
-Spree::CheckoutController.class_eval do
-
-  protect_from_forgery except: [:push_uri, :confirmation]
+Spree::CheckoutController.class_eval do  
 
   def push_uri
     # get the id
