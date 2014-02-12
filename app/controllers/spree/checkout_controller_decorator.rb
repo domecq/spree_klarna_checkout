@@ -2,9 +2,9 @@ require 'klarna/checkout'
 
 Spree::CheckoutController.class_eval do
 
-  skip_before_filter :verify_authenticity_token
+  protect_from_forgery except: [:push_uri, :confirmation]
 
-  def push
+  def push_uri
     # get the id
     checkout_id = params[:klarna_order]
 
@@ -91,7 +91,7 @@ Spree::CheckoutController.class_eval do
         terms_uri:        'http://spreetest.pixelwerk.no/terms',
         checkout_uri:     'http://spreetest.pixelwerk.no/checkout',
         confirmation_uri: 'http://spreetest.pixelwerk.no/confirmation',
-        push_uri:         'http://spreetest.pixelwerk.no/push'
+        push_uri:         'http://spreetest.pixelwerk.no/push_uri'
       }
     })
 
